@@ -1,0 +1,24 @@
+# Gradle
+.gradle/
+build/
+
+# Compiled output
+bin/
+out/
+*.class
+*.jar
+*.war
+
+# IDE
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

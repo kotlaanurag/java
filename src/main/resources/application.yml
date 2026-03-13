@@ -1,0 +1,77 @@
+spring:
+  application:
+    name: cobol-airlines
+
+  # Default profile: h2 (in-memory for local dev)
+  profiles:
+    active: h2
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  jackson:
+    date-format: yyyy-MM-dd
+    serialization:
+      write-dates-as-timestamps: false
+
+---
+# H2 in-memory profile (local development)
+spring:
+  config:
+    activate:
+      on-profile: h2
+
+  datasource:
+    url: jdbc:h2:mem:cobalairlinesdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL;DEFAULT_NULL_ORDERING=HIGH
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
+
+---
+# PostgreSQL profile (production / DB2 migration target)
+spring:
+  config:
+    activate:
+      on-profile: postgres
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cobalairlinesdb
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USERNAME:dbadmin}
+    password: ${DB_PASSWORD:password}
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+---
+app:
+  jwt:
+    secret: ${JWT_SECRET:cobalAirlinesSecretKey2024SuperLongKeyForHS256Algorithm}
+    expiration-ms: 86400000   # 24 hours
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.cobalairlines: DEBUG
+    org.springframework.security: INFO
